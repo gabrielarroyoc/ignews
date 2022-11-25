@@ -1,1 +1,1 @@
-declare module "next-auth/client";
+declare module "@stripe/stripe-js";
