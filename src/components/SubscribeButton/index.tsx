@@ -20,7 +20,7 @@ export function SubscribeButton({ priceId }: SubscribeButtonProps) {
       const stripe = await getStripeJs();
       await stripe.redirectToCheckout({ sessionId: sessionId });
     } catch (err) {
-      alert(err.message);
+      console.log(err.message, "errinho do seu pai");
     }
   }
   return (
