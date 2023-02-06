@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { prismic } from "../../services/prismicio";
 import styles from "../posts/styles.module.scss";
+import type Content from "@prismicio/client";
 import { createClient } from "@prismicio/client";
 import type { GetStaticPropsContext } from "next";
 
@@ -56,13 +57,24 @@ export default function Posts() {
 }
 
 export async function getStaticProps({ previewData }: GetStaticPropsContext) {
-  const client = createClient({});
+  const client = createClient("https://ignewss12.cdn.prismic.io/api/v2");
 
-  const page = await client.getByUID("page", "home");
+  const page = await client.getByUID<
+    Content.PageDocument & {
+      data: {
+        relatedBlogPost: {
+          data: Pick<Content.BlogPostDocument["data"], "title" | "text">;
+        };
+      };
+    }
+  >("page", "home", {
+    fetchLinks: ["post.title", "post.text"],
+  });
 
   return {
     props: {
       page,
+      Posts,
     },
   };
 }
